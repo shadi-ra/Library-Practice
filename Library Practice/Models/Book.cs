@@ -14,6 +14,7 @@ namespace Library_Practice.Models
         public Publisherr publisherr { get; set; }
         public DateTime PublishDate { get; set; }
         public int ISBN { get; set; }
+        public List<Category> categories { get; set; }
 
     }
 }

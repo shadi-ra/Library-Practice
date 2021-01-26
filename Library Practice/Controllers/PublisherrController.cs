@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library_Practice.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class PublisherrController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace Library_Practice.Controllers
             return repository.Get(id);
         }
         [HttpGet]
-        public List<Publisherr> GetAllPublisherr()
+        public List<Publisherr> GetAll()
         {
             return repository.GetAll();
         }

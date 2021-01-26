@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Library_Practice.DTO;
 using Library_Practice.Models;
 using Library_Practice.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -36,7 +37,44 @@ namespace Library_Practice.Controllers
             repository.Insert(input);
             repository.Save();
             return input.Id;
-           
+
+        }
+        [HttpPost]
+        public List<Book> Search([FromBody] SearchRequest input)
+        {
+            var lst = repository.GetAll();
+         
+
+            if (input.authors == null)
+            {
+                return null;
+            }
+
+            if (input.categories == null)
+            {
+                return null;
+            }
+            if (input.publication == null)
+            {
+                return null;
+            }
+
+            foreach (var item in lst)
+            {
+                for (int i = 0; i < i; i++)
+                {
+                    var lst1 = item.authors.Where(x => x.FullName == input.authors[i]).Select(x => x.FullName);
+
+                }
+                for (int i = 0; i < input.categories.Count; i++)
+                {
+                    var lst1 = item.categories.Where(x => x.Name == input.categories[i]);
+                }
+                var lst3 = item.publisherr.Name == input.publication;
+
+            }
+
+
         }
         [HttpPut]
         public void Update([FromBody] Book input)
