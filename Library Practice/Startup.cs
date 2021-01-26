@@ -30,7 +30,9 @@ namespace Library_Practice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IRepository<Publisher>, EfRepository<Publisher>>();
-       
+            services.AddTransient<IRepository<Author>, EfRepository<Author>>();
+            services.AddTransient<IRepository<Book>, EfRepository<Book>>();
+            services.AddTransient<IRepository<Category>, EfRepository<Category>>();       
             services.AddDbContext<LibraryDbContext>(o =>
             { o.UseSqlServer(Configuration.GetConnectionString("LibraryDbConections")); });
             services.AddControllers();

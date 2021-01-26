@@ -31,10 +31,11 @@ namespace Library_Practice.Controllers
         }
 
         [HttpPost]
-         public void  InsertPublisher([FromBody] Publisher publisher)
+         public void  InsertPublisher([FromBody] Publisher input)
         {
-            repository.Insert(publisher);
-           
+            
+            repository.Insert(input);
+                                                   
         }
         [HttpPut]
         public void Update([FromBody] Publisher input)
