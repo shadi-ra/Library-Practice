@@ -7,86 +7,116 @@ using Library_Practice.Models;
 using Library_Practice.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library_Practice.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly IRepository<Book> repository;
-        public BookController(IRepository<Book> repository)
+        private readonly IRepository<Book> bookRepository;
+
+        private readonly IRepository<BookCategory> bookCategoryRepository;
+
+        private readonly IRepository<Category> categoryRepository;
+        private readonly IRepository<Author> authorRepository;
+        private readonly IRepository<Publisherr> publisherRepository;
+        private readonly IRepository<BookAuthor> BookAuthorRepository;
+
+        public BookController(IRepository<Book> bookRepository, IRepository<BookCategory> bookCategoryRepository
+            , IRepository<Category> categoryRepository
+            , IRepository<Author> authorRepository
+            , IRepository<Publisherr> publisherRepository, IRepository<BookAuthor> BookAuthorRepository)
         {
-            this.repository = repository;
+            this.categoryRepository = categoryRepository;
+            this.bookRepository = bookRepository;
+            this.bookCategoryRepository = bookCategoryRepository;
+            this.authorRepository = authorRepository;
+            this.publisherRepository = publisherRepository;
+            this.BookAuthorRepository = BookAuthorRepository;
         }
 
         [HttpGet]
         public Book GetBook([FromQuery] int id)
         {
-            return repository.Get(id);
+            return bookRepository.Get(id);
         }
         [HttpGet]
         public List<Book> GetAllBook()
         {
-            return repository.GetAll();
+            return bookRepository.GetAll();
         }
 
         [HttpPost]
         public int InsertBook([FromBody] Book input)
         {
-            repository.Insert(input);
-            repository.Save();
+            bookRepository.Insert(input);
+            bookRepository.Save();
             return input.Id;
 
         }
         [HttpPost]
-        public List<Book> Search([FromBody] SearchRequest input)
+        public SearchListBookResponse Search([FromBody] SearchRequest input)
         {
-            var lst = repository.GetAll();
-         
+           
 
-            if (input.authors == null)
+            int publisherId = 0;
+            var categoryIds = categoryRepository.GetAll().Where(x => input.categories.Contains(x.Name)).Select(x => x.Id).ToList();
+
+            var authorIds = authorRepository.GetAll().Where(x => input.authors.Contains(x.FullName)).Select(x => x.Id).ToList();
+
+            var publisher = publisherRepository.GetAll().Where(x => x.Name == input.publication).FirstOrDefault();
+            if (publisher != null)
             {
-                return null;
+                publisherId = publisher.Id;
             }
 
-            if (input.categories == null)
+
+            var bookId1 = bookCategoryRepository.GetAll().Where(x => categoryIds.Contains(x.CategoryId)).Select(x => x.BookId).ToList();
+
+            var bookId2 = BookAuthorRepository.GetAll().Where(x => authorIds.Contains(x.AuthorId)).Select(x => x.BookId).ToList();
+
+            bookId1.AddRange(bookId2);
+
+            List<Book> books = new List<Book>();
+            if (bookId1.Count != 0)
             {
-                return null;
+                books = bookRepository.GetAll().Where(x => bookId1.Contains(x.Id)).ToList();
             }
-            if (input.publication == null)
+            if (publisherId != 0)
             {
-                return null;
+                var books1 = bookRepository.GetAll().Where(x => bookId1.Contains(x.Id) && x.PublisherrId == publisherId).ToList();
+                books.AddRange(books1);
             }
 
-            foreach (var item in lst)
+            if (books.Count != 0) 
             {
-                for (int i = 0; i < i; i++)
+               var resp = books.Select(x => new SearchResponse()
                 {
-                    var lst1 = item.authors.Where(x => x.FullName == input.authors[i]).Select(x => x.FullName);
+                    title = x.Title,
+                    authors = x.BookAuthors.Select(x => x.Author.FullName).ToList(),
+                    publishDate = x.PublishDate,
+                    publisher = x.publisherr.Name,
+                    ISBN = x.ISBN
+                }).ToList();
 
-                }
-                for (int i = 0; i < input.categories.Count; i++)
-                {
-                    var lst1 = item.categories.Where(x => x.Name == input.categories[i]);
-                }
-                var lst3 = item.publisherr.Name == input.publication;
-
+                return new SearchListBookResponse() { Books = resp };
             }
-
-
+            return null;
+      
         }
         [HttpPut]
         public void Update([FromBody] Book input)
         {
-            repository.Update(input);
-            repository.Save();
+            bookRepository.Update(input);
+            bookRepository.Save();
         }
         [HttpDelete]
         public void Delete([FromQuery] int id)
         {
-            repository.Delete(id);
-            repository.Save();
+            bookRepository.Delete(id);
+            bookRepository.Save();
 
         }
 

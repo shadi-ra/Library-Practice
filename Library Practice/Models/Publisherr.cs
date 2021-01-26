@@ -9,6 +9,6 @@ namespace Library_Practice.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Book> book { get; set; }
+        public List<Book> Books { get; set; }
     }
 }

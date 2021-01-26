@@ -10,7 +10,7 @@ namespace Library_Practice.Models
         public int Id { get; set; }
         public int AuthorId { get; set; }
         public int BookId { get; set; }
-        public List<Author> authors   { get; set; }
-        public List<Book> books { get; set; }
+        public Author Author { get; set; }
+        public Book Book { get; set; }
     }
 }

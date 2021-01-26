@@ -32,7 +32,9 @@ namespace Library_Practice
             services.AddTransient<IRepository<Publisherr>, EfRepository<Publisherr>>();
             services.AddTransient<IRepository<Author>, EfRepository<Author>>();
             services.AddTransient<IRepository<Book>, EfRepository<Book>>();
-            services.AddTransient<IRepository<Category>, EfRepository<Category>>();       
+            services.AddTransient<IRepository<Category>, EfRepository<Category>>();
+            services.AddScoped<IRepository<BookCategory>, EfRepository<BookCategory>>();
+            services.AddScoped<IRepository<BookAuthor>, EfRepository<BookAuthor>>();
             services.AddDbContext<LibraryDbContext>(o =>
             { o.UseSqlServer(Configuration.GetConnectionString("LibraryDbConections")); });
             services.AddControllers();
