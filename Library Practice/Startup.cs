@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Library_Practice.DataBase;
+using Library_Practice.Models;
+using Library_Practice.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +29,8 @@ namespace Library_Practice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IRepository<Publisher>, EfRepository<Publisher>>();
+       
             services.AddDbContext<LibraryDbContext>(o =>
             { o.UseSqlServer(Configuration.GetConnectionString("LibraryDbConections")); });
             services.AddControllers();
