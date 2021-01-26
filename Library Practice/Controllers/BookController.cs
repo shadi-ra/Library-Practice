@@ -34,17 +34,21 @@ namespace Library_Practice.Controllers
         public int InsertBook([FromBody] Book input)
         {
             repository.Insert(input);
+            repository.Save();
             return input.Id;
+           
         }
         [HttpPut]
         public void Update([FromBody] Book input)
         {
             repository.Update(input);
+            repository.Save();
         }
         [HttpDelete]
         public void Delete([FromQuery] int id)
         {
             repository.Delete(id);
+            repository.Save();
 
         }
 

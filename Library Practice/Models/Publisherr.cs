@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Library_Practice.Models
 {
-    public class Publisher:IHasIdentity
+    public class Publisherr:IHasIdentity
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -29,7 +29,7 @@ namespace Library_Practice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IRepository<Publisher>, EfRepository<Publisher>>();
+            services.AddTransient<IRepository<Publisherr>, EfRepository<Publisherr>>();
             services.AddTransient<IRepository<Author>, EfRepository<Author>>();
             services.AddTransient<IRepository<Book>, EfRepository<Book>>();
             services.AddTransient<IRepository<Category>, EfRepository<Category>>();       

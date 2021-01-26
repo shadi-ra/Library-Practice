@@ -11,7 +11,7 @@ namespace Library_Practice.DataBase
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
-        public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Publisherr> Publishers { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }
         public DbSet<BookCategory> BookCategorys { get; set; }
@@ -29,7 +29,7 @@ namespace Library_Practice.DataBase
             modelbuilder.Entity<Book>(x => x.ToTable("Book"));
             modelbuilder.Entity<Author>(x => x.ToTable("Author"));
             modelbuilder.Entity<Category>(x => x.ToTable("Category"));
-            modelbuilder.Entity<Publisher>(x => x.ToTable("Publisher"));
+            modelbuilder.Entity<Publisherr>(x => x.ToTable("Publisherr"));
             modelbuilder.Entity<BookAuthor>(x => x.ToTable("BookAuthor"));
             modelbuilder.Entity<BookCategory>(x => x.ToTable("BookCategory"));
         }

@@ -28,23 +28,27 @@ namespace Library_Practice.Controllers
         public List<Category> GetAllCategory()
         {
             return repository.GetAll();
+            repository.Save();
         }
 
         [HttpPost]
         public int InsertCategory([FromBody] Category input)
         {
             repository.Insert(input);
+            repository.Save();
             return input.Id;
         }
         [HttpPut]
         public void Update([FromBody] Category input)
         {
             repository.Update(input);
+            repository.Save();
         }
         [HttpDelete]
         public void Delete([FromQuery] int id)
         {
             repository.Delete(id);
+            repository.Save();
 
         }
 

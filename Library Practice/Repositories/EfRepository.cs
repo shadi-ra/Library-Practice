@@ -10,6 +10,8 @@ namespace Library_Practice.Repositories
     public class EfRepository<T> : IRepository<T> where T : class, IHasIdentity
     {
         private readonly LibraryDbContext dBContext;
+
+
         public EfRepository(LibraryDbContext dBContext)
         {
             this.dBContext = dBContext;
