@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library_Practice.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class AuthorController : ControllerBase
     {
@@ -33,9 +33,15 @@ namespace Library_Practice.Controllers
         [HttpPost]
         public int InsertAuthor([FromBody ] Author input)
         {
+            try {
             repository.Insert(input);
             repository.Save();
             return input.Id;
+            }
+            catch
+            {
+                return 0;
+            }
         }
         [HttpPut]
         public void Update([FromBody] Author input)

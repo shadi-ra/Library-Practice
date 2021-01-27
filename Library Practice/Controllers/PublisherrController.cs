@@ -23,7 +23,14 @@ namespace Library_Practice.Controllers
         [HttpGet]
         public Publisherr GetPublisherr([FromQuery] int id)
         {
-            return repository.Get(id);
+            try
+            {
+                return repository.Get(id);
+            }
+            catch
+            {
+                return null;
+            }
         }
         [HttpGet]
         public List<Publisherr> GetAll()
