@@ -14,12 +14,13 @@ namespace Library_Practice.Controllers
     [ApiController]
     public class BookAuthorController : ControllerBase
     {
+        private readonly LibraryDbContext libraryContext;
         public BookAuthorController(LibraryDbContext libraryContext)
         {
-            libraryContext = libraryContext;
+           this.libraryContext = libraryContext;
         }
 
-        public LibraryDbContext libraryContext { get; }
+       
 
 
         [HttpPost]
