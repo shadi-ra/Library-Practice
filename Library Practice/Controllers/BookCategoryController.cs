@@ -14,12 +14,15 @@ namespace Library_Practice.Controllers
     [ApiController]
     public class BookCategoryController : ControllerBase
     {
-        public BookCategoryController(LibraryDbContext libraryContext)
+        private readonly LibraryDbContext libraryContext;
+        private readonly IRepository<BookCategory> repository;
+        public BookCategoryController(LibraryDbContext libraryContext, IRepository<BookCategory> repository)
         {
-            libraryContext = libraryContext;
+            this.libraryContext = libraryContext;
+            this.repository = repository;
         }
 
-        public LibraryDbContext libraryContext { get; }
+
 
 
         [HttpPost]
@@ -44,29 +47,29 @@ namespace Library_Practice.Controllers
 
 
         [HttpDelete]
-        public void UnRegister([FromQuery] BookCategory input)
+        public int UnRegister([FromQuery] int id)
         {
 
 
-            var lst = libraryContext.Books.Where(x => x.Id == input.BookId).FirstOrDefault();
-            var lst1 = libraryContext.Categories.Where(x => x.Id == input.CategoryId).FirstOrDefault();
+            var lst = libraryContext.BookCategorys.Where(x => x.Id == id).FirstOrDefault();
 
-            if (lst == null && lst1 == null)
+
+            if (lst == null)
             {
-                return;
+                return 0;
             }
 
-            libraryContext.BookCategorys.Remove(input);
-            libraryContext.SaveChanges();
+            repository.Delete(id);
+            repository.Save();
+            return id;
 
         }
         [HttpPut]
 
         public int Update([FromBody] BookCategory input)
         {
-            var lst = libraryContext.BookCategorys.FirstOrDefault(x => x.Id == input.Id);
-            libraryContext.BookCategorys.Update(input);
-            libraryContext.SaveChanges();
+            repository.Update(input);
+            repository.Save();
             // mesle crtl s dar data base mibashad savechange
             return input.Id;
 
@@ -74,8 +77,9 @@ namespace Library_Practice.Controllers
         [HttpGet]
         public List<BookCategory> GeAall()
         {
-            return libraryContext.BookCategorys.ToList();
+            return repository.GetAll();
         }
+
 
     }
 }

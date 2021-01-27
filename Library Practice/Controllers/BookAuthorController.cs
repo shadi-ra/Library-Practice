@@ -15,9 +15,11 @@ namespace Library_Practice.Controllers
     public class BookAuthorController : ControllerBase
     {
         private readonly LibraryDbContext libraryContext;
-        public BookAuthorController(LibraryDbContext libraryContext)
+        private readonly IRepository<BookAuthor> repository;
+        public BookAuthorController(LibraryDbContext libraryContext, IRepository<BookAuthor> repository)
         {
            this.libraryContext = libraryContext;
+            this.repository = repository;
         }
 
        
@@ -45,29 +47,29 @@ namespace Library_Practice.Controllers
 
 
         [HttpDelete]
-        public void UnRegister([FromQuery] BookAuthor input)
+        public int UnRegister([FromQuery] int id)
         {
 
 
-            var lst = libraryContext.Books.Where(x => x.Id == input.BookId).FirstOrDefault();
-            var lst1 = libraryContext.Authors.Where(x => x.Id == input.AuthorId).FirstOrDefault();
+            var lst = libraryContext.BookAuthors.Where(x => x.Id == id).FirstOrDefault();
 
-            if (lst == null && lst1 == null)
+
+            if (lst == null )
             {
-                return ;
+                return 0 ;
             }
 
-            libraryContext.BookAuthors.Remove(input);
-            libraryContext.SaveChanges();
+            repository.Delete(id);
+           repository.Save();
+            return id;
 
         }
         [HttpPut]
 
         public int Update([FromBody] BookAuthor input)
         {
-            var lst = libraryContext.BookAuthors.FirstOrDefault(x => x.Id == input.Id);
-            libraryContext.BookAuthors.Update(input);
-            libraryContext.SaveChanges();
+            repository.Update(input);
+            repository.Save();
             // mesle crtl s dar data base mibashad savechange
             return input.Id;
 
@@ -75,7 +77,7 @@ namespace Library_Practice.Controllers
         [HttpGet]
         public List<BookAuthor> GeAall()
         {
-            return libraryContext.BookAuthors.ToList();
+            return repository.GetAll();
         }
 
 
