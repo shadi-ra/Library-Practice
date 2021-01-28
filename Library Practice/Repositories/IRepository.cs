@@ -13,5 +13,7 @@ namespace Library_Practice.Repositories
         T Update(T item);
         void Delete(int id);
         void Save();
+        IQueryable<T> GetQuery();
+
     }
 }

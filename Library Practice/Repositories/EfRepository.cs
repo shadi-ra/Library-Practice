@@ -47,5 +47,10 @@ namespace Library_Practice.Repositories
         {
             this.dBContext.SaveChanges();
         }
+
+        public IQueryable<T> GetQuery()
+        {
+           return dBContext.Set<T>().AsQueryable();
+        }
     }
 }
